@@ -44,6 +44,13 @@ app.post("/jobs", async (req, res) => {
   res.send(result);
 });
 
+//Jobs Data Find Api
+app.get("/jobs", async (req, res) => {
+  const cursor = jobs.find();
+  const result = await cursor.toArray();
+  res.send(result);
+});
+
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
 });
