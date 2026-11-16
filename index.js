@@ -11,7 +11,7 @@ const client = new MongoClient(
 );
 
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 
 export async function connectToMongoDB() {
   try {
