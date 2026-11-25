@@ -46,17 +46,37 @@ app.post("/jobs", async (req, res) => {
 
 //Jobs Data Find Api
 app.get("/jobs", async (req, res) => {
-  const cursor = jobs.find();
+  const query = {};
+
+  if (req.query) {
+    if (req.query.jobType) {
+      query.jobType = req.query.jobType;
+    }
+    if (req.query.remoteAllowed) {
+      query.remoteAllowed = req.query.remoteAllowed === "true";
+    }
+    if (req.query.jobCategory) {
+      query.jobCategory = req.query.jobCategory;
+    }
+    if (req.query.search) {
+      query.$or = [
+        { jobTitle: { $regex: req.query.search, $options: "i" } },
+        { jobCategory: { $regex: req.query.search, $options: "i" } },
+        { companyName: { $regex: req.query.search, $options: "i" } },
+      ];
+    }
+  }
+  const cursor = jobs.find(query);
   const result = await cursor.toArray();
   res.send(result);
 });
 //Jobs Delete API
-app.delete('/jobs/:id',async(req,res)=>{
+app.delete("/jobs/:id", async (req, res) => {
   const id = req.params.id;
-  const query ={_id:new ObjectId(id)};
+  const query = { _id: new ObjectId(id) };
   const result = await jobs.deleteOne(query);
   res.send(result);
-})
+});
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
