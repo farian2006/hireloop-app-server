@@ -47,10 +47,11 @@ app.post("/jobs", async (req, res) => {
 //Jobs Data Find Api
 app.get("/jobs", async (req, res) => {
   const query = {};
+  let sort = { _id: -1 };
 
   if (req.query) {
     if (req.query.jobType) {
-      query.jobType = req.query.jobType;
+      query.jobType = { $in: req.query.jobType.split(",") };
     }
     if (req.query.remoteAllowed) {
       query.remoteAllowed = req.query.remoteAllowed === "true";
@@ -64,6 +65,12 @@ app.get("/jobs", async (req, res) => {
         { jobCategory: { $regex: req.query.search, $options: "i" } },
         { companyName: { $regex: req.query.search, $options: "i" } },
       ];
+    }
+    if (req.query.sort === "salary_desc") {
+      sort = { maxSalary: -1 };
+    }
+    if (req.query.sort === "salary_asc") {
+      sort = { minSalary: 1 };
     }
   }
   const cursor = jobs.find(query);
