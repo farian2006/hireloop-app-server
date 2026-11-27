@@ -102,6 +102,7 @@ app.post("/applications", async (req, res) => {
 });
 app.get('/applications',async(req,res)=> {
   const query = {};
+
   const cursor = applications.find(query);
   const result = await cursor.toArray();
   res.send(result);
