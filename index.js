@@ -100,13 +100,22 @@ app.post("/applications", async (req, res) => {
   const result = await applications.insertOne(application);
   res.send(result);
 });
-app.get('/applications',async(req,res)=> {
+app.get("/applications", async (req, res) => {
   const query = {};
 
   const cursor = applications.find(query);
   const result = await cursor.toArray();
   res.send(result);
-})
+});
+
+app.get("/applications/count", async (req, res) => {
+  const query = {};
+  if (req.query.applicantId) {
+    query.userId = req.query.applicantId;
+  }
+  const result = await applications.countDocuments(query);
+  res.send({ count: result });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
