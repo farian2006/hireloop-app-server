@@ -77,6 +77,14 @@ app.get("/jobs", async (req, res) => {
   const result = await cursor.toArray();
   res.send(result);
 });
+//Job Details API
+app.get(`/jobs/:id`, async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await jobs.findOne(query);
+  res.send(result);
+});
+
 //Jobs Delete API
 app.delete("/jobs/:id", async (req, res) => {
   const id = req.params.id;
