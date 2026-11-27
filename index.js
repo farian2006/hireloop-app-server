@@ -100,6 +100,12 @@ app.post("/applications", async (req, res) => {
   const result = await applications.insertOne(application);
   res.send(result);
 });
+app.get('/applications',async(req,res)=> {
+  const query = {};
+  const cursor = applications.find(query);
+  const result = await cursor.toArray();
+  res.send(result);
+})
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
