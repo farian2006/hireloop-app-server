@@ -120,3 +120,6 @@ app.get("/applications/count", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
 });
+
+
+
